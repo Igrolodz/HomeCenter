@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <h1>ARCTIC AWAKE CENTER</h1>
+            <button class="wake-button" onclick="wakeComputer()">START THE ARC</button>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 ARCTIC WOL SERVER</p>
+    </footer>
+    <script>
+        async function wakeComputer() {
+            try {
+                const response = await fetch('/wake');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                alert(data.message);
+            }
+            catch (error) {
+                console.error("Error:", error);
+                alert('Failed to wake computer');
+            }
+        }
+    </script>
+</body>
+</html>
