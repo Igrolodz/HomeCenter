@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 import wakeonlan
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -18,7 +18,20 @@ def verify_password(username, password):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('login.html')
+
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    if username in users and check_password_hash(users.get(username), password):
+        return redirect(url_for('home'))
+    else:
+        return jsonify({'message': 'Invalid credentials!'}), 401
 
 @app.route('/wake', methods=['GET'])
 @auth.login_required
