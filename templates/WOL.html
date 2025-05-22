@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="../static/css/wolStyle.css">
+    <script src="../static/scripts/wakePC.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('WOL') }}">Wake On Lan</a>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <h1>ARCTIC AWAKE CENTER</h1>
+            <button class="wake-button" onclick="wakeComputer()">START THE ARC</button>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 ARCTIC WOL SERVER</p>
+    </footer>
+</body>
+</html>
