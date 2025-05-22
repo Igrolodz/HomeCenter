@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="../static/css/style.css">
+    <script src="../static/scripts/wakePC.js"></script>
 </head>
 <body>
     <header>
         <nav>
             <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('index') }}">Wake On Lan</a>
         </nav>
     </header>
     <main>
@@ -21,21 +23,5 @@
     <footer>
         <p>&copy; 2025 ARCTIC WOL SERVER</p>
     </footer>
-    <script>
-        async function wakeComputer() {
-            try {
-                const response = await fetch('/wake');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                alert(data.message);
-            }
-            catch (error) {
-                console.error("Error:", error);
-                alert('Failed to wake computer');
-            }
-        }
-    </script>
 </body>
 </html>
