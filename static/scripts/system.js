@@ -2,7 +2,6 @@ socket.on('system_stats_update', (data) => {
     let cpuUsage = data.cpu_usage;
     let ramUsage = data.ram_usage;
     let diskSpace = data.disk_space;
-    console.log(`CPU: ${cpuUsage}%, RAM: ${ramUsage}%, Disk: ${diskSpace}%`);
 
     document.getElementById('cpu').innerText = `${cpuUsage}%`;
     document.getElementById('ram').innerText = `${ramUsage}%`;
