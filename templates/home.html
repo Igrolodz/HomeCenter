@@ -17,21 +17,32 @@
             <a href="{{ url_for('WOL') }}">Wake On Lan</a>
         </nav>
     </header>
-    <main>
-        <div class="container">
-            <h1 id="clock">00:00</h1>
+    <main class="layout">
+        <div class="right-panel">
+            <!-- Add your right panel content here -->
+            <div class="panel-item">Right Panel Item 1</div>
+            <div class="panel-item">Right Panel Item 2</div>
         </div>
-        <div class="weather">
-            <!-- <dotlottie-player src="https://lottie.host/f3e00168-7aab-4b99-be92-698d5ff538b6/gy54KTu0D2.lottie"
-                background="transparent" speed="0.5" style="width: 400px; height: 400px;" loop autoplay></dotlottie-player> -->
-            <div id="icon">
-                
+        
+        <div class="center-panel">
+            <div class="container">
+                <h1 id="clock">00:00</h1>
             </div>
-            <p id="temp">0.0°C</p>
+            <div class="weather">
+                <div id="icon"></div>
+                <p id="temp">0.0°C</p>
+            </div>
+        </div>
+
+        <div class="left-panel">
+            <!-- Add your left panel content here -->
+            <div class="panel-item">Left Panel Item 1</div>
+            <div class="panel-item">Left Panel Item 2</div>
+            <div class="panel-item">Left Panel Item 3</div>
         </div>
     </main>
     <footer>
-        <p>&copy; 2025 ARCTIC WOL SERVER</p>
+        <p>&copy; 2025 ARCTIC HOME CENTER</p>
     </footer>
 </body>
 </html>
