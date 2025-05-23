@@ -8,9 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../static/scripts/weather.js"></script>
     <script src="../static/scripts/time.js"></script>
     <script src="../static/scripts/system.js"></script>
+    <script src="../static/scripts/networkChart.js"></script>
+    <script src="../static/scripts/onlineDevices.js"></script>
 </head>
 <body>
     <header>
@@ -107,9 +110,28 @@
                 </div>
             </div>
         </div>
+        <div class="right-bottom-panel">
+            <div class="panel-item online-stats">
+                <div class="online-icon">
+                    <i class="fa-solid fa-circle"></i>
+                </div>
+                <div class="online-info">
+                    <span id="online" class="online-label">Online network devices: 0</span>
+                </div>
+            </div>
+            <div class="panel-item network-stats">
+                <div class="network-icon">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <div class="network-info">
+                    <span id="network" class="network-label">Download: 0Mb/s Upload: 0Mb/s</span>
+                    <canvas id="networkFlowChart" width="150" height="100"></canvas>
+                </div>
+            </div>
+        </div>
     </main>
     <footer>
-        <p>&copy; 2025 ARCTIC HOME CENTER</p>
+        <p>&copy; 2025 OPTI HOME CENTER</p>
     </footer>
 </body>
 </html>

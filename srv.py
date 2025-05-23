@@ -17,6 +17,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Hardware info import
 import psutil
 
+# Network info import
+import subprocess
+import ipaddress
+
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 socketio = SocketIO(app)
@@ -83,6 +87,43 @@ def send_system_stats():
             print("Error updating system stats:", e)
         time.sleep(1)  # wait 1 second
 
+def send_network_stats():
+    while True:
+        try:
+            net_io = psutil.net_io_counters()
+            bytes_sent = net_io.bytes_sent
+            bytes_recv = net_io.bytes_recv
+            time.sleep(1)
+            net_io_new = psutil.net_io_counters()
+            # Calculate speed in Mbps (dividing by 1024*1024/8 to convert bytes to Mbits)
+            upload_speed = (net_io_new.bytes_sent - bytes_sent) / (1024 * 1024 / 8)
+            download_speed = (net_io_new.bytes_recv - bytes_recv) / (1024 * 1024 / 8)
+            network_stats = {
+                'upload_speed': f"{upload_speed:.2f}",
+                'download_speed': f"{download_speed:.2f}"
+            }
+            socketio.emit('network_stats_update', network_stats)
+        except Exception as e:
+            print("Error getting network stats:", e)
+        time.sleep(1)
+    
+def ping_sweep(subnet="192.168.0.0/24"):
+    active = []
+    print("Scanning network...")
+    for ip in ipaddress.IPv4Network(subnet):
+        result = subprocess.run(["ping", "-n", "1", "-w", "300", str(ip)], stdout=subprocess.DEVNULL)
+        if result.returncode == 0:
+            active.append(str(ip))
+    return active
+
+def device_scanner():
+    while True:
+        current_state = set(ping_sweep())
+        print("Current state:", current_state)
+        socketio.emit("network_devices", list(current_state))
+        time.sleep(1)
+
+
 @socketio.on('connect')
 def handle_connect():
     print("Client connected")
@@ -101,4 +142,6 @@ def wake_pc():
 if __name__ == '__main__':
     socketio.start_background_task(send_weather_loop)
     socketio.start_background_task(send_system_stats)
+    socketio.start_background_task(send_network_stats)
+    socketio.start_background_task(device_scanner)
     socketio.run(app, host='0.0.0.0', port=21376)

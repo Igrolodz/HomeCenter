@@ -97,6 +97,12 @@ footer {
     grid-column: 3;
 }
 
+.right-bottom-panel{
+    grid-column: 3;
+    align-self: end;
+    margin-top: -100px;
+}
+
 .left-panel {
     grid-column: 1;
     align-self: end;
@@ -225,4 +231,52 @@ footer {
     background: #7d3c98;
     border-radius: 3px;
     transition: width 0.3s ease;
+}
+
+.online-stats {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.online-icon i {
+    font-size: 16px;
+    color: #2ecc71;
+}
+
+.online-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.online-label {
+    font-size: 14px;
+    color: #fff;
+    opacity: 0.8;
+}
+
+.network-stats {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.network-icon i {
+    font-size: 24px;
+    color: #4bb7ff;
+}
+
+.network-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.network-label {
+    font-size: 14px;
+    color: #fff;
+    opacity: 0.8;
 }
