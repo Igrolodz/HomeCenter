@@ -14,6 +14,9 @@ import wakeonlan
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 
+# Hardware info import
+import psutil
+
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 socketio = SocketIO(app)
@@ -62,7 +65,23 @@ def send_weather_loop():
             socketio.emit('weather_update', weather)
         except Exception as e:
             print("Error updating weather:", e)
-        time.sleep(1)  # wait 10 seconds
+        time.sleep(1)  # wait 1 second
+        
+def send_system_stats():
+    while True:
+        try:
+            cpu_usage = psutil.cpu_percent(interval=1)
+            ram_usage = psutil.virtual_memory().percent
+            disk_space = psutil.disk_usage('/').percent
+            system_stats = {
+                'cpu_usage': cpu_usage,
+                'ram_usage': ram_usage,
+                'disk_space': disk_space
+            }
+            socketio.emit('system_stats_update', system_stats)
+        except Exception as e:
+            print("Error updating system stats:", e)
+        time.sleep(1)  # wait 1 second
 
 @socketio.on('connect')
 def handle_connect():
@@ -81,4 +100,5 @@ def wake_pc():
 
 if __name__ == '__main__':
     socketio.start_background_task(send_weather_loop)
+    socketio.start_background_task(send_system_stats)
     socketio.run(app, host='0.0.0.0', port=21376)

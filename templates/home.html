@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="../static/css/homeStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <script src="../static/scripts/weather.js"></script>
     <script src="../static/scripts/time.js"></script>
+    <script src="../static/scripts/system.js"></script>
 </head>
 <body>
     <header>
@@ -19,9 +21,42 @@
     </header>
     <main class="layout">
         <div class="right-panel">
-            <!-- Add your right panel content here -->
-            <div class="panel-item">Right Panel Item 1</div>
-            <div class="panel-item">Right Panel Item 2</div>
+            <div class="panel-item cpu-stats">
+                <div class="cpu-icon">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="cpu-info">
+                    <span class="cpu-label">CPU Usage</span>
+                    <span id="cpu" class="cpu-value">45%</span>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 45%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-item cpu-stats">
+                <div class="ram-icon">
+                    <i class="fa-solid fa-memory"></i>
+                </div>
+                <div class="cpu-info">
+                    <span class="cpu-label">RAM Usage</span>
+                    <span id="ram" class="cpu-value">45%</span>
+                    <div class="progress-bar">
+                        <div class="ram-progress" style="width: 45%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-item cpu-stats">
+                <div class="disk-icon">
+                    <i class="fa-solid fa-hard-drive"></i>
+                </div>
+                <div class="cpu-info">
+                    <span class="cpu-label">disk Space</span>
+                    <span id="disk" class="cpu-value">45%</span>
+                    <div class="progress-bar">
+                        <div class="disk-progress" style="width: 45%"></div>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="center-panel">
@@ -35,10 +70,42 @@
         </div>
 
         <div class="left-panel">
-            <!-- Add your left panel content here -->
-            <div class="panel-item">Left Panel Item 1</div>
-            <div class="panel-item">Left Panel Item 2</div>
-            <div class="panel-item">Left Panel Item 3</div>
+            <div class="panel-item date-stats">
+                <div class="date-icon">
+                    <i class="fas fa-calendar-year"></i>
+                </div>
+                <div class="date-info">
+                    <span class="date-label">Year Progress</span>
+                    <span id="year-progress" class="date-value">45%</span>
+                    <div class="progress-bar">
+                        <div class="year-progress" style="width: 45%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-item date-stats">
+                <div class="date-icon">
+                    <i class="fas fa-calendar-days"></i>
+                </div>
+                <div class="date-info">
+                    <span class="date-label">Month Progress</span>
+                    <span id="month-progress" class="date-value">45%</span>
+                    <div class="progress-bar">
+                        <div class="month-progress" style="width: 45%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-item date-stats">
+                <div class="date-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="date-info">
+                    <span class="date-label">Day Progress</span>
+                    <span id="day-progress" class="date-value">45%</span>
+                    <div class="progress-bar">
+                        <div class="day-progress" style="width: 45%"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     <footer>
