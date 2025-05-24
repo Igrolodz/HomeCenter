@@ -4,6 +4,7 @@ eventlet.monkey_patch()
 
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from flask_socketio import SocketIO, emit
+import json
 
 # weather api imports
 from weather import get_weather
@@ -120,7 +121,9 @@ def device_scanner():
     while True:
         current_state = set(ping_sweep())
         print("Current state:", current_state)
-        socketio.emit("network_devices", list(current_state))
+        # socketio.emit("network_devices", list(current_state))
+        with open("static/DB/devices.json" , "w") as f:
+            json.dump(list(current_state), f)
         time.sleep(1)
 
 
