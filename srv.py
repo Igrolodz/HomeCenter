@@ -22,10 +22,23 @@ import psutil
 import subprocess
 import ipaddress
 
+# Logging setup
+import logging
+import os
+
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 socketio = SocketIO(app)
 
+log_file = 'static/logs/homeCenter.log'
+os.makedirs(os.path.dirname(log_file), exist_ok=True)
+open(log_file, 'w').close()
+logging.basicConfig(
+    filename=log_file,
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 API_KEY = "f263012af952d70aba19d0072080042b"
 LAT = 51.12
@@ -69,7 +82,7 @@ def send_weather_loop():
             weather = get_weather(API_KEY, LAT, LON)
             socketio.emit('weather_update', weather)
         except Exception as e:
-            print("Error updating weather:", e)
+            logging.info("Error updating weather:", e)
         time.sleep(1)  # wait 1 second
         
 def send_system_stats():
@@ -85,7 +98,7 @@ def send_system_stats():
             }
             socketio.emit('system_stats_update', system_stats)
         except Exception as e:
-            print("Error updating system stats:", e)
+            logging.info("Error updating system stats:", e)
         time.sleep(1)  # wait 1 second
 
 def send_network_stats():
@@ -105,12 +118,12 @@ def send_network_stats():
             }
             socketio.emit('network_stats_update', network_stats)
         except Exception as e:
-            print("Error getting network stats:", e)
+            logging.info("Error getting network stats:", e)
         time.sleep(1)
     
 def ping_sweep(subnet="192.168.0.0/24"):
     active = []
-    print("Scanning network...")
+    logging.info("Scanning network...")
     for ip in ipaddress.IPv4Network(subnet):
         result = subprocess.run(["ping", "-n", "1", "-w", "300", str(ip)], stdout=subprocess.DEVNULL)
         if result.returncode == 0:
@@ -120,7 +133,7 @@ def ping_sweep(subnet="192.168.0.0/24"):
 def device_scanner():
     while True:
         current_state = set(ping_sweep())
-        print("Current state:", current_state)
+        logging.info("Current IPs: %s", str(current_state))
         # socketio.emit("network_devices", list(current_state))
         with open("static/DB/devices.json" , "w") as f:
             json.dump(list(current_state), f)
@@ -129,14 +142,14 @@ def device_scanner():
 
 @socketio.on('connect')
 def handle_connect():
-    print("Client connected")
+    logging.info(f"Client connected - IP: {request.remote_addr}")
 
 
 @app.route('/wake', methods=['GET'])
 @auth.login_required
 def wake_pc():
     try:
-        print("Received wake command")
+        logging.info("Received wake command")
         wakeonlan.main(["D8:43:AE:3E:45:0F"])  # Uses default port 9 and broadcast address
         return jsonify({'message': 'Wake command sent successfully! ARCTIC should be on in a few seconds!'})
     except Exception as e:

@@ -14,6 +14,7 @@
     <script src="../static/scripts/system.js"></script>
     <script src="../static/scripts/networkChart.js"></script>
     <script src="../static/scripts/onlineDevices.js"></script>
+    <script src="../static/scripts/logs.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/icon/CYAN.ico">
 </head>
@@ -71,6 +72,33 @@
             <div class="weather">
                 <div id="icon"></div>
                 <p id="temp">0.0°C</p>
+            </div>
+        </div>
+
+        <div class="left-top-panel">
+            <div class="panel-item logs-stats">
+                <div class="logs-header">
+                    <div class="logs-icon">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <span class="logs-title">System Logs</span>
+                </div>
+                <div class="logs-tabs">
+                    <button class="tab-button active" data-tab="system">System</button>
+                    <button class="tab-button" data-tab="network">Network</button>
+                    <button class="tab-button" data-tab="security">Security</button>
+                </div>
+                <div class="logs-content">
+                    <div class="tab-content active" id="system-logs">
+                        <pre id="systemLogList" class="log-content"></pre>
+                    </div>
+                    <div class="tab-content" id="network-logs">
+                        <pre id="networkLogList" class="log-content"></pre>
+                    </div>
+                    <div class="tab-content" id="security-logs">
+                        <pre id="securityLogList" class="log-content"></pre>
+                    </div>
+                </div>
             </div>
         </div>
 

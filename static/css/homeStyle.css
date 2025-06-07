@@ -109,6 +109,116 @@ footer {
     margin-top: -100px;
 }
 
+.left-top-panel {
+    grid-column: 1;
+    margin-top: -570px;
+}
+
+.logs-stats {
+    min-height: 450px;
+    /* min-width: 400px; */
+    height: 450px; /* Set fixed height */
+    display: flex;
+    flex-direction: column;
+}
+
+.logs-icon {
+    display: flex;
+    color: #3498db;
+    font-size: 24px;
+}
+
+.logs-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.logs-title {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.logs-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.tab-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 8px 15px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.tab-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.tab-button.active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.logs-content {
+    flex-grow: 1;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    position: relative; /* Add position relative */
+    height: calc(100% - 80px); /* Account for header and tabs */
+}
+
+.tab-content {
+    display: none;
+    height: 100%;
+    position: absolute; /* Add position absolute */
+    width: 100%;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.log-content {
+    height: 100%;
+    margin: 0;
+    padding: 10px;
+    color: #fff;
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.4;
+    overflow-y: scroll; /* Change to scroll */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    box-sizing: border-box; /* Add box-sizing */
+    width: 100%;
+    position: absolute; /* Add position absolute */
+}
+
+/* Style the scrollbar */
+.log-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.log-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.log-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.log-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
 .panel-item {
     background-color: rgba(34, 34, 34, 0.8);
     padding: 15px;
