@@ -146,7 +146,6 @@ def handle_connect():
 
 @socketio.on('heartbeat')
 def handle_heartbeat(data):
-    logging.info("Heartbeat received from client")
     socketio.emit('heartbeat_pass', data)
 
 @app.route('/wake', methods=['GET'])
