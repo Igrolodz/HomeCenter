@@ -116,10 +116,11 @@ footer {
 
 .logs-stats {
     min-height: 420px;
-    /* min-width: 400px; */
-    height: 420px; /* Set fixed height */
+    height: 420px;
     display: flex;
     flex-direction: column;
+    position: relative;
+    width: 400px; /* Set explicit width */
 }
 
 .logs-icon {
@@ -170,15 +171,16 @@ footer {
     overflow: hidden;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
-    position: relative; /* Add position relative */
-    height: calc(100% - 80px); /* Account for header and tabs */
+    position: relative;
+    height: calc(100% - 80px);
+    width: 100%;
 }
 
 .tab-content {
     display: none;
     height: 100%;
-    position: absolute; /* Add position absolute */
     width: 100%;
+    position: relative;  /* Change from absolute to relative */
 }
 
 .tab-content.active {
@@ -193,12 +195,12 @@ footer {
     font-family: 'Consolas', monospace;
     font-size: 13px;
     line-height: 1.4;
-    overflow-y: scroll; /* Change to scroll */
+    overflow-y: auto;    /* Change from scroll to auto */
     white-space: pre-wrap;
     word-wrap: break-word;
-    box-sizing: border-box; /* Add box-sizing */
+    box-sizing: border-box;
     width: 100%;
-    position: absolute; /* Add position absolute */
+    position: relative;  /* Change from absolute to relative */
 }
 
 /* Style the scrollbar */
@@ -217,6 +219,48 @@ footer {
 
 .log-content::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.4);
+}
+
+.active-services {
+    position: absolute;
+    left: 100%;
+    top: 2%;
+    width: 140px;
+    height: 250px;
+    background: rgba(34, 34, 34, 0.8);
+    border-radius: 0 8px 8px 0;
+    padding: 15px;
+    margin-left: -1px;
+}
+
+.service-icon {
+    font-size: 12px;
+    vertical-align: middle;
+    color: #e74c3c;
+}
+
+.active-services h2 {
+    color: white;
+    font-size: 16px;
+    margin: 0 0 10px 0;
+}
+
+.active-services ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+
+.active-services li {
+    color: white;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 5px 0;
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+    font-size: 14px;
+    opacity: 0.8;
 }
 
 .panel-item {

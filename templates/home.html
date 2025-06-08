@@ -15,6 +15,7 @@
     <script src="../static/scripts/networkChart.js"></script>
     <script src="../static/scripts/onlineDevices.js"></script>
     <script src="../static/scripts/logs.js"></script>
+    <script src="../static/scripts/services.js"></script>
 
     <link rel="icon" type="image/x-icon" href="/static/icon/CYAN.ico">
 </head>
@@ -98,6 +99,28 @@
                     <div class="tab-content" id="security-logs">
                         <pre id="securityLogList" class="log-content"></pre>
                     </div>
+                </div>
+                <div class="active-services">
+                    <h2>Active Services</h2>
+                    <ul id="activeServicesList">
+                        <!-- Active services will be populated here -->
+                         <li>
+                            <div class="service-icon" id="cyan_icon">
+                                <i class="fa-solid fa-circle"></i>
+                            </div>
+                            <div class="service-info">
+                                <span id="cyan">CYAN: OFFLINE</span>
+                            </div>
+                        </li>
+                         <li>
+                            <div class="service-icon" id="cyan_ai_icon">
+                                <i class="fa-solid fa-circle"></i>
+                            </div>
+                            <div class="service-info">
+                                <span id="cyan_ai">CYAN_AI: OFFLINE</span>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
