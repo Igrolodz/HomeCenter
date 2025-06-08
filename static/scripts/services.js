@@ -28,7 +28,7 @@ function checkStaleServices() {
             if (element) {
                 const serviceName = element.innerText.split(':')[0];
                 element.innerText = `${serviceName}: OFFLINE`;
-                element.style.color = "#e74c3c"; // Red color for offline status
+                heartbeatIcon.style.color = "#e74c3c"; // Red color for offline status
             }
         }
     });
