@@ -1,2 +1,27 @@
+# Dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
 static/logs/
-static/DB
+
+# Runtime data
+pids/
+*.pid
+*.seed
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+
+# Build output
+dist/
+build/
+static/logs/homeCenter.log
