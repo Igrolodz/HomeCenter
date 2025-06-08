@@ -23,9 +23,9 @@ body {
 h1{
     color: white;
     text-align: center;
-    font-size: 4rem;  /* 64px */
-    margin: 0.0625rem 0 0 0;
-    letter-spacing: 0.625rem;  /* 10px */
+    font-size: 64px;
+    margin: 1rem 0 0 0;
+    letter-spacing: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.267);
 }
 
@@ -40,13 +40,13 @@ h1{
 }
 
 .weather p{
-    font-size: 1.875rem;  /* 30px */
+    font-size: 30px;
     margin: 0;
 }
 
 #icon {
-    width: 25rem;  /* 400px */
-    height: 25rem;  /* 400px */
+    width: 400px;
+    height: 400px;
 }
 
 header {
@@ -59,10 +59,10 @@ nav a {
     color: white;
     text-decoration: none;
     background-color: #444;
-    padding: 0.5rem 0.9375rem;  /* 8px 15px */
-    border: 0.1875rem solid #444;  /* 3px */
-    border-radius: 0.5rem;  /* 8px */
-    margin-right: 0.625rem;  /* 10px */
+    padding: 8px 15px;
+    border: 3px solid #444;
+    border-radius: 8px;
+    margin-right: 10px;
 }
 
 nav a:hover {
@@ -83,9 +83,10 @@ footer {
 
 .layout {
     display: grid;
-    grid-template-columns: 21.875rem 1fr 21.875rem;  /* 350px */
-    gap: 1.25rem;  /* 20px */
-    padding: 1.25rem;  /* 20px */
+    grid-template-columns: 350px 1fr 350px;
+    /* min-height: calc(100vh - 120px); Account for header and footer */
+    gap: 20px;
+    padding: 20px;
 }
 
 .center-panel {
@@ -99,60 +100,60 @@ footer {
 .right-bottom-panel{
     grid-column: 3;
     align-self: end;
-    margin-top: -6.5rem;  /* -120px */
+    margin-top: -120px;
 }
 
 .left-panel {
     grid-column: 1;
     align-self: end;
-    margin-top: -6.5rem;  /* -120px */
+    margin-top: -120px;
 }
 
 .left-top-panel {
     grid-column: 1;
-    margin-top: -34.625rem;  /* -570px */
+    margin-top: -570px;
 }
 
 .logs-stats {
-    min-height: 26.25rem;  /* 420px */
-    height: 26.25rem;  /* 420px */
+    min-height: 420px;
+    height: 420px;
     display: flex;
     flex-direction: column;
     position: relative;
-    width: 25rem;  /* 400px */
+    width: 400px; /* Set explicit width */
 }
 
 .logs-icon {
     display: flex;
     color: #3498db;
-    font-size: 1.5rem;  /* 24px */
+    font-size: 24px;
 }
 
 .logs-header {
     display: flex;
     align-items: center;
-    gap: 0.625rem;  /* 10px */
-    margin-bottom: 0.9375rem;  /* 15px */
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 .logs-title {
     color: white;
-    font-size: 1.125rem;  /* 18px */
+    font-size: 18px;
     font-weight: bold;
 }
 
 .logs-tabs {
     display: flex;
-    gap: 0.3125rem;  /* 5px */
-    margin-bottom: 0.9375rem;  /* 15px */
+    gap: 5px;
+    margin-bottom: 15px;
 }
 
 .tab-button {
     background: rgba(255, 255, 255, 0.1);
     border: none;
-    padding: 0.5rem 0.9375rem;  /* 8px 15px */
+    padding: 8px 15px;
     color: white;
-    border-radius: 0.25rem;  /* 4px */
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
@@ -189,10 +190,10 @@ footer {
 .log-content {
     height: 100%;
     margin: 0;
-    padding: 0.625rem;  /* 10px */
+    padding: 10px;
     color: #fff;
     font-family: 'Consolas', monospace;
-    font-size: 0.8125rem;  /* 13px */
+    font-size: 13px;
     line-height: 1.4;
     overflow-y: auto;    /* Change from scroll to auto */
     white-space: pre-wrap;
@@ -204,7 +205,7 @@ footer {
 
 /* Style the scrollbar */
 .log-content::-webkit-scrollbar {
-    width: 0.5rem;  /* 8px */
+    width: 8px;
 }
 
 .log-content::-webkit-scrollbar-track {
@@ -224,24 +225,24 @@ footer {
     position: absolute;
     left: 100%;
     top: 2%;
-    width: 8.75rem;  /* 140px */
-    height: 15.625rem;  /* 250px */
+    width: 140px;
+    height: 250px;
     background: rgba(34, 34, 34, 0.8);
-    border-radius: 0 0.5rem 0.5rem 0;  /* 8px */
-    padding: 0.9375rem;  /* 15px */
+    border-radius: 0 8px 8px 0;
+    padding: 15px;
     margin-left: -1px;
 }
 
 .service-icon {
-    font-size: 0.75rem;  /* 12px */
+    font-size: 12px;
     vertical-align: middle;
     color: #e74c3c;
 }
 
 .active-services h2 {
     color: white;
-    font-size: 1rem;  /* 16px */
-    margin: 0 0 0.625rem 0;  /* 10px */
+    font-size: 16px;
+    margin: 0 0 10px 0;
 }
 
 .active-services ul {
@@ -254,37 +255,34 @@ footer {
 .active-services li {
     color: white;
     display: flex;
-    gap: 0.3125rem;  /* 5px */
+    gap: 5px;
     align-items: center;
-    padding: 0.3125rem 0;  /* 5px */
+    padding: 5px 0;
     /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
-    font-size: 0.875rem;  /* 14px */
+    font-size: 14px;
     opacity: 0.8;
 }
 
 .panel-item {
     background-color: rgba(34, 34, 34, 0.8);
-    padding: 0.9375rem;  /* 15px */
-    margin-bottom: 0.625rem;  /* 10px */
-    border-radius: 0.5rem;  /* 8px */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .cpu-stats {
     display: flex;
     align-items: center;
-    gap: 0.9375rem;  /* 15px */
-}
-
-.cpu-icon i, .ram-icon i, .disk-icon i, .network-icon i {
-    font-size: 1.5rem;  /* 24px */
+    gap: 15px;
 }
 
 .cpu-icon i {
+    font-size: 24px;
     color: #3498db;
 }
-
 .ram-icon i {
+    font-size: 24px;
     color: #34db3c;
 }
 
@@ -296,20 +294,23 @@ footer {
 }
 
 .cpu-label {
-    font-size: 0.875rem;  /* 14px */
+    font-size: 14px;
     color: #fff;
     opacity: 0.8;
 }
 
 .cpu-value {
-    font-size: 1rem;  /* 16px */
+    font-size: 16px;
     color: #fff;
     font-weight: bold;
 }
 
 .progress-bar {
-    height: 0.375rem;  /* 6px */
-    border-radius: 0.1875rem;  /* 3px */
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
 }
 
 .progress {
@@ -325,6 +326,7 @@ footer {
     transition: width 0.3s ease;
 }
 .disk-icon i {
+    font-size: 24px;
     color: #e67e22;
 }
 .disk-progress {
@@ -337,11 +339,11 @@ footer {
 .date-stats {
     display: flex;
     align-items: center;
-    gap: 0.9375rem;  /* 15px */
+    gap: 15px;
 }
 
 .date-icon i {
-    font-size: 1.5rem;  /* 24px */
+    font-size: 24px;
     color: #9b59b6;
 }
 
@@ -353,13 +355,13 @@ footer {
 }
 
 .date-label {
-    font-size: 0.875rem;  /* 14px */
+    font-size: 14px;
     color: #fff;
     opacity: 0.8;
 }
 
 .date-value {
-    font-size: 1rem;  /* 16px */
+    font-size: 16px;
     color: #fff;
     font-weight: bold;
 }
@@ -388,11 +390,11 @@ footer {
 .online-stats {
     display: flex;
     align-items: center;
-    gap: 0.9375rem;  /* 15px */
+    gap: 15px;
 }
 
 .online-icon i {
-    font-size: 1rem;  /* 16px */
+    font-size: 16px;
     color: #2ecc71;
 }
 
@@ -404,7 +406,7 @@ footer {
 }
 
 .online-label {
-    font-size: 0.875rem;  /* 14px */
+    font-size: 14px;
     color: #fff;
     opacity: 0.8;
 }
@@ -412,11 +414,11 @@ footer {
 .network-stats {
     display: flex;
     align-items: center;
-    gap: 0.9375rem;  /* 15px */
+    gap: 15px;
 }
 
 .network-icon i {
-    font-size: 1.5rem;  /* 24px */
+    font-size: 24px;
     color: #4bb7ff;
 }
 
@@ -428,7 +430,7 @@ footer {
 }
 
 .network-label {
-    font-size: 0.875rem;  /* 14px */
+    font-size: 14px;
     color: #fff;
     opacity: 0.8;
 }
