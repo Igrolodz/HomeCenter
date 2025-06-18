@@ -35,4 +35,5 @@ function checkStaleServices() {
 }
 
 // Start periodic checking
+checkStaleServices(); // Initial check
 setInterval(checkStaleServices, 1000); // Check every second
