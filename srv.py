@@ -82,13 +82,13 @@ def send_weather_loop():
             weather = get_weather(API_KEY, LAT, LON)
             socketio.emit('weather_update', weather)
         except Exception as e:
-            logging.info("Error updating weather:", e)
+            logging.exception("Error updating weather:")
         time.sleep(1)  # wait 1 second
         
 def send_system_stats():
     while True:
         try:
-            cpu_usage = psutil.cpu_percent(interval=1)
+            cpu_usage = psutil.cpu_percent(interval=None)
             ram_usage = psutil.virtual_memory().percent
             disk_space = psutil.disk_usage('/').percent
             system_stats = {
@@ -98,7 +98,7 @@ def send_system_stats():
             }
             socketio.emit('system_stats_update', system_stats)
         except Exception as e:
-            logging.info("Error updating system stats:", e)
+            logging.exception("Error updating system stats:")
         time.sleep(1)  # wait 1 second
 
 def send_network_stats():
@@ -118,7 +118,7 @@ def send_network_stats():
             }
             socketio.emit('network_stats_update', network_stats)
         except Exception as e:
-            logging.info("Error getting network stats:", e)
+            logging.exception("Error getting network stats:")
         time.sleep(1)
     
 def ping_sweep(subnet="192.168.0.0/24"):
@@ -133,7 +133,7 @@ def ping_sweep(subnet="192.168.0.0/24"):
 def device_scanner():
     while True:
         current_state = set(ping_sweep())
-        logging.info("Current IPs: %s", str(current_state))
+        # logging.info("Current IPs: %s", str(current_state))
         # socketio.emit("network_devices", list(current_state))
         with open("static/DB/devices.json" , "w") as f:
             json.dump(list(current_state), f)
