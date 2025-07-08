@@ -123,7 +123,7 @@ def send_network_stats():
     
 def ping_sweep(subnet="192.168.0.0/24"):
     active = []
-    logging.info("Scanning network...")
+    # logging.info("Scanning network...")
     for ip in ipaddress.IPv4Network(subnet):
         result = subprocess.run(["ping", "-n", "1", "-w", "300", str(ip)], stdout=subprocess.DEVNULL)
         if result.returncode == 0:
