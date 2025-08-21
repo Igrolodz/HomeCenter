@@ -52,7 +52,7 @@ h1{
 header {
     background-color: #222;
     color: white;
-    padding: 1rem;
+    padding: 1rem 0.625rem;
 }
 
 nav a {
@@ -62,13 +62,14 @@ nav a {
     padding: 8px 15px;
     border: 3px solid #444;
     border-radius: 8px;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 nav a:hover {
     background-color: #555;
     color: white;
     border: 3px solid #555;
+    transition: background-color 0.3s, color 0.3s, border 0.3s;
 }
 
 footer {
