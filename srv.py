@@ -163,4 +163,4 @@ if __name__ == '__main__':
     socketio.start_background_task(send_system_stats)
     socketio.start_background_task(send_network_stats)
     socketio.start_background_task(device_scanner)
-    socketio.run(app, host='0.0.0.0', port=21376)
+    socketio.run(app, host='0.0.0.0', port=80)
