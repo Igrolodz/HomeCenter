@@ -28,7 +28,7 @@ import os
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app)
 
 log_file = 'static/logs/homeCenter.log'
 os.makedirs(os.path.dirname(log_file), exist_ok=True)
