@@ -1,3 +1,3 @@
 @echo off
-
+echo Starting HomeCenter Services...
 python srv.py
