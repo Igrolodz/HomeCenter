@@ -27,6 +27,10 @@ dns_logger.addHandler(logging.FileHandler(log_file))
 # Simple DNS resolver, responds to queries for "homecenter.panel" with a fixed IP which you can edit however you'd like.
 # I recommend to use NSSM (Non-Sucking Service Manager) to run this script as a service on Windows.
 class DNSResolver(BaseResolver):
+    def __init__(self):
+        super().__init__()
+        self.upstream_dns = "192.168.0.1"  # Router's default DNS
+
     def resolve(self, request, handler):
         reply = request.reply()
         qname = request.q.qname
@@ -36,7 +40,15 @@ class DNSResolver(BaseResolver):
             logging.info(f"DNS Query: {qname} ({qtype}) -> 192.168.0.111")
             reply.add_answer(RR(rname=qname, rtype=QTYPE.A, rdata=A("192.168.0.111")))
         else:
-            logging.info(f"DNS Query: {qname} ({qtype}) -> Not Found")
+            try:
+                # Forward the query using DNSServer
+                upstream_request = request.send(self.upstream_dns)
+                if upstream_request:
+                    logging.info(f"DNS Query: {qname} ({qtype}) -> Forwarded")
+                    return upstream_request
+            except Exception as e:
+                logging.info(f"DNS Query: {qname} ({qtype}) -> Not Found: {str(e)}")
+                reply.add_answer(RR(rname=qname, rtype=QTYPE.A, rdata=A("0.0.0.0")))
         return reply
 
 def run_server():
