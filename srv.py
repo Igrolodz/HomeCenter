@@ -7,7 +7,7 @@ from flask_socketio import SocketIO, emit
 import json
 
 # weather api imports
-from weather import get_weather
+from pyScripts.weather import get_weather
 import time
 
 # wake on lan + security imports
