@@ -26,6 +26,9 @@ import ipaddress
 import logging
 import os
 
+# School API import
+from pyScripts.schoolAPI import get_attendance_data
+
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -65,6 +68,10 @@ def home():
 @app.route('/wol')
 def WOL():
     return render_template('WOL.html')
+
+@app.route('/school')
+def school():
+    return render_template('school.html')
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -147,6 +154,16 @@ def handle_connect():
 @socketio.on('heartbeat')
 def handle_heartbeat(data):
     socketio.emit('heartbeat_pass', data)
+    
+@socketio.on('get_attendance')
+def fetch_attendance_data():
+    try:
+        logging.info("Fetching attendance data")
+        attendance_data = get_attendance_data()
+        emit('attendance_data', attendance_data)
+    except Exception as e:
+        logging.exception("Error fetching attendance data:")
+        emit('attendance_data', {'error': str(e)})
 
 @app.route('/wake', methods=['GET'])
 @auth.login_required
