@@ -29,6 +29,11 @@ import os
 # School API import
 from pyScripts.schoolAPI import get_attendance_data
 
+# Load environment variables
+from dotenv import load_dotenv
+load_dotenv("config.env")
+
+
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -43,12 +48,12 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-API_KEY = "f263012af952d70aba19d0072080042b"
-LAT = 51.12
-LON = 17.22
+API_KEY = os.getenv("WEATHERAPP_API_KEY")
+LAT = os.getenv("LAT")
+LON = os.getenv("LON")
 
 users = {
-    "igrolodz": generate_password_hash("asERcvAR2312!"),
+    os.getenv("HC_LOGIN"): generate_password_hash(os.getenv("HC_PASSWORD")),
 }
 
 @auth.verify_password

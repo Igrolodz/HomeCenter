@@ -1,7 +1,10 @@
 from playwright.sync_api import sync_playwright
 import time
-import json
 import re
+import os
+from dotenv import load_dotenv
+load_dotenv("config.env")
+
 
 def format_subject_name(subject):
     # Replace dots with nothing (except the last one)
@@ -46,8 +49,8 @@ def get_attendance_data():
             time.sleep(1)  # Give it a moment to load
 
             # Fill in login form
-            page.fill("input[name=login]", "ikolodziejczyk")
-            page.fill("input[name=haslo]", "j362jTYp")
+            page.fill("input[name=login]", os.getenv("MB_LOGIN"))
+            page.fill("input[name=haslo]", os.getenv("MB_PASSWORD"))
             page.click("input[type=submit]")
 
             # Wait for navigation after login
@@ -91,7 +94,3 @@ def get_attendance_data():
             browser.close()
 
         return attendance_data
-
-# if __name__ == "__main__":
-#     attendance = get_attendance_data()
-#     print(json.dumps(attendance, indent=2, ensure_ascii=False))
