@@ -94,7 +94,7 @@ def send_weather_loop():
             weather = get_weather(API_KEY, LAT, LON)
             socketio.emit('weather_update', weather)
         except Exception as e:
-            logging.exception("Error updating weather:")
+            logging.exception(f"Error updating weather: {e}")
         time.sleep(1)  # wait 1 second
         
 def send_system_stats():
