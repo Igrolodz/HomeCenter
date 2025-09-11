@@ -1,0 +1,160 @@
+@font-face {
+    font-family: 'poppins extraLight';
+    src: url('../fonts/Poppins-ExtraLight.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background: linear-gradient(to bottom, #2c3e50, #3498db) no-repeat fixed;
+    font-family: "poppins extraLight", sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    color: white;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+header {
+    background-color: #222;
+    color: white;
+    padding: 1rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    background-color: #444;
+    padding: 8px 15px;
+    border: 3px solid #444;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        padding: 0.625rem;
+    }
+
+    nav a {
+        display: inline-block;
+        overflow: hidden;
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}
+
+nav a:hover {
+    background-color: #555;
+    color: white;
+    border: 3px solid #555;
+}
+
+footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.info-panel {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem auto;
+    width: 15%;
+    max-width: 274px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: border-color 0.7s ease-in-out;
+}
+
+.panel-header {
+    border-bottom: 1px solid white;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.attendance-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.progress {
+    height: 100%;
+    background-color: white;
+    width: 0;
+    transition: width 0.7s ease-in-out, background-color 0.7s ease-in-out;
+}
+
+.week-days {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 1920px;
+    height: 250px;
+    margin: 0 auto;
+}
+
+.day {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.45);
+    color: white;
+    border-left: 2px solid white;
+    border-top: 2px solid white;
+    border-right: 2px solid white;
+    border-radius: 8px 8px 0 0;
+    margin: 0 5px;
+    transition: border-color 0.7s ease-in-out;
+}
+
+.day-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+}
+
+.safe-status {
+    font-size: 0.9em;
+    color: white;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+ul {
+    margin: 0;
+    font-size: 14px;
+    list-style-type: none;
+    padding: 0;
+}

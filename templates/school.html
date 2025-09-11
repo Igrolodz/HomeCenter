@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="../static/css/schoolStyle.css">
+
+    <link rel="icon" type="image/x-icon" href="/static/icon/CYAN.ico">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="../static/scripts/attendance.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('WOL') }}">Wake On Lan</a>
+            <a href="{{ url_for('school') }}">School Chart</a>
+            <a href="{{ url_for('school') }}">Daily AI Settings</a>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div class="info-panel" id="biologia-panel">
+                <div class="panel-header">
+                    <span>Biologia</span>
+                </div>
+                <div class="panel-content">
+                    <span id="biologia-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="biologia-safe-skip">Safe skip: ...</span>
+                        <span id="biologia-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="biologia-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="wychowanie_fizyczne-panel">
+                <div class="panel-header">
+                    <span>WF</span>
+                </div>
+                <div class="panel-content">
+                    <span id="wychowanie_fizyczne-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="wychowanie_fizyczne-safe-skip">Safe skip: ...</span>
+                        <span id="wychowanie_fizyczne-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="wychowanie_fizyczne-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="chemia-panel">
+                <div class="panel-header">
+                    <span>Chemia</span>
+                </div>
+                <div class="panel-content">
+                    <span id="chemia-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="chemia-safe-skip">Safe skip: ...</span>
+                        <span id="chemia-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="chemia-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="fizyka-panel">
+                <div class="panel-header">
+                    <span>Fizyka</span>
+                </div>
+                <div class="panel-content">
+                    <span id="fizyka-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="fizyka-safe-skip">Safe skip: ...</span>
+                        <span id="fizyka-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="fizyka-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="historia-panel">
+                <div class="panel-header">
+                    <span>Historia</span>
+                </div>
+                <div class="panel-content">
+                    <span id="historia-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="historia-safe-skip">Safe skip: ...</span>
+                        <span id="historia-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="historia-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="j_angielski-panel">
+                <div class="panel-header">
+                    <span>J. Angielski</span>
+                </div>
+                <div class="panel-content">
+                    <span id="j_angielski-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="j_angielski-safe-skip">Safe skip: ...</span>
+                        <span id="j_angielski-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="j_angielski-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="j_angielski_zawodowy-panel">
+                <div class="panel-header">
+                    <span>JZ. Angielski</span>
+                </div>
+                <div class="panel-content">
+                    <span id="j_angielski_zawodowy-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="j_angielski_zawodowy-safe-skip">Safe skip: ...</span>
+                        <span id="j_angielski_zawodowy-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="j_angielski_zawodowy-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="j_polski-panel">
+                <div class="panel-header">
+                    <span>J. Polski</span>
+                </div>
+                <div class="panel-content">
+                    <span id="j_polski-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="j_polski-safe-skip">Safe skip: ...</span>
+                        <span id="j_polski-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="j_polski-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="j_zyk_niemiecki-panel">
+                <div class="panel-header">
+                    <span>J. Niemiecki</span>
+                </div>
+                <div class="panel-content">
+                    <span id="j_zyk_niemiecki-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="j_zyk_niemiecki-safe-skip">Safe skip: ...</span>
+                        <span id="j_zyk_niemiecki-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="j_zyk_niemiecki-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="matematyka-panel">
+                <div class="panel-header">
+                    <span>Matematyka</span>
+                </div>
+                <div class="panel-content">
+                    <span id="matematyka-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="matematyka-safe-skip">Safe skip: ...</span>
+                        <span id="matematyka-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="matematyka-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="tworzenie_i_administrowanie_bazami_danych-panel">
+                <div class="panel-header">
+                    <span>Bazy Danych</span>
+                </div>
+                <div class="panel-content">
+                    <span id="tworzenie_i_administrowanie_bazami_danych-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="tworzenie_i_administrowanie_bazami_danych-safe-skip">Safe skip: ...</span>
+                        <span id="tworzenie_i_administrowanie_bazami_danych-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="tworzenie_i_administrowanie_bazami_danych-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="tworzenie_stron_i_aplikacji_internetowych-panel">
+                <div class="panel-header">
+                    <span>Aplikacje Inter.</span>
+                </div>
+                <div class="panel-content">
+                    <span id="tworzenie_stron_i_aplikacji_internetowych-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="tworzenie_stron_i_aplikacji_internetowych-safe-skip">Safe skip: ...</span>
+                        <span id="tworzenie_stron_i_aplikacji_internetowych-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="tworzenie_stron_i_aplikacji_internetowych-progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel" id="witryny_i_aplikacje_internetowe-panel">
+                <div class="panel-header">
+                    <span>Witryny</span>
+                </div>
+                <div class="panel-content">
+                    <span id="witryny_i_aplikacje_internetowe-attendance">Frekwencja: Loading...</span>
+
+                    <div class="attendance-details">
+                        <span id="witryny_i_aplikacje_internetowe-safe-skip">Safe skip: ...</span>
+                        <span id="witryny_i_aplikacje_internetowe-max-skip">Max skip: ...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%" id="witryny_i_aplikacje_internetowe-progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="week-days">
+        <div class="status"></div>
+        <div class="day" id="Monday">
+            <div class="day-header">
+                <span>Poniedziałek</span>
+                <div class="safe-status" id="monday-state">Loading...</div>
+            </div>
+
+            <div class="day-content">
+                <ul>
+                    <li>J. Polski</li>
+                    <li>J. Angielski zawodowy</li>
+                    <li>WF</li>
+                    <li>Bazy Danych</li>
+                    <li>Angielski</li>
+                </ul>
+            </div>
+        </div>
+        <div class="day" id="Tuesday">
+            <div class="day-header">
+                <span>Wtorek</span>
+                <div class="safe-status" id="tuesday-state">Loading...</div>
+            </div>
+
+            <div class="day-content">
+                <ul>
+                    <li>Aplikacje internetowe</li>
+                    <li>J. Angielski</li>
+                    <li>WF</li>
+                    <li>J. Polski</li>
+                    <li>Bazy Danych</li>
+                </ul>
+            </div>
+        </div>
+        <div class="day" id="Wednesday">
+            <div class="day-header">
+                <span>Środa</span>
+                <div class="safe-status" id="wednesday-state">Loading...</div>
+            </div>
+
+            <div class="day-content">
+                <ul>
+                    <li>Witryny internetowe</li>
+                    <li>J. Polski</li>
+                    <li>Chemia</li>
+                    <li>Matematyka</li>
+                    <li>Niemiecki</li>
+                    <li>Biologia</li>
+                </ul>
+            </div>
+        </div>
+        <div class="day" id="Thursday">
+            <div class="day-header">
+                <span>Czwartek</span>
+                <div class="safe-status" id="thursday-state">Loading...</div>
+            </div>
+
+            <div class="day-content">
+                <ul>
+                    <li>Aplikacje internetowe</li>
+                    <li>Matematyka</li>
+                    <li>Zajęcia wychowawcze</li>
+                </ul>
+            </div>
+        </div>
+        <div class="day" id="Friday">
+            <div class="day-header">
+                <span>Piątek</span>
+                <div class="safe-status" id="friday-state">Loading...</div>
+            </div>
+
+            <div class="day-content">
+                <ul>
+                    <li>Fizyka</li>
+                    <li>Historia</li>
+                    <li>Matematyka</li>
+                    <li>Witryny internetowe</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- <footer>
+        <p>&copy; 2025 OPTI HOME CENTER</p>
+    </footer> -->
+</body>
+</html>
