@@ -1,2 +1,3 @@
 static/logs/homeCenter.log
 static/DB/devices.json
+config.env
