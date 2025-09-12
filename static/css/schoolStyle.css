@@ -158,3 +158,10 @@ ul {
     list-style-type: none;
     padding: 0;
 }
+
+.day-skip-counter{
+    font-size: 0.6em;
+    color: white;
+    margin-top: 5px;
+    font-weight: normal;
+}

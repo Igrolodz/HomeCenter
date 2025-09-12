@@ -69,12 +69,14 @@ socket.on('attendance_data', (data) =>{
     for (const day in daysOfWeek) {
         let lowestRate = 100;
         let dayState = states.safe;
+        let maxSkip = 9999;
 
         for (const subject of daysOfWeek[day]) {
             if (data[subject]) {
                 const totalHours = data[subject].hours_per_week * 12;
                 const predictedAttendance = totalHours - data[subject].absent_excused - data[subject].absent_unexcused;
                 const rate = (predictedAttendance / totalHours) * 100;
+                const subjectMaxSkip = Math.floor(totalHours * 0.5);
                 
                 if (rate < lowestRate) {
                     lowestRate = rate;
@@ -82,16 +84,16 @@ socket.on('attendance_data', (data) =>{
                     else if (rate >= 60) dayState = states.warning;
                     else dayState = states.danger;
                 }
+
+                if(subjectMaxSkip <= maxSkip){
+                    maxSkip = subjectMaxSkip;
+                }
             }
         }
 
         document.getElementById(`${day}`).style.borderColor = dayState.color;
         document.getElementById(`${day.toLowerCase()}-state`).innerText = dayState.text;
         document.getElementById(`${day.toLowerCase()}-state`).style.color = dayState.color;
+        document.getElementById(`${day.toLowerCase()}-max-skip`).innerText = `${maxSkip}`;
     }
-
-    // document.getElementById('matematyka-attendance').innerText = `Frekwencja: ${data.matematyka.attendance_rate}%`;
-    // document.getElementById('matematyka-safe-skip').innerText = `Safe skip: ${data.matematyka.safe_skip}`;
-    // document.getElementById('matematyka-max-skip').innerText = `Max skip: ${data.matematyka.max_skip}`;
-    // document.getElementById('matematyka-progress').style.width = `${data.matematyka.progress}%`;
 })
