@@ -37,8 +37,8 @@ socket.on('attendance_data', (data) =>{
         try {
             let totalHours = data[subject].hours_per_week * 12;
 
-            let safeSkip = Math.floor(totalHours * 0.4);
-            let maxSkip = Math.floor(totalHours * 0.5);
+            let safeSkip = Math.floor(totalHours * 0.4) - data[subject].absent_excused - data[subject].absent_unexcused;
+            let maxSkip = Math.floor(totalHours * 0.5) - data[subject].absent_excused - data[subject].absent_unexcused;
             let predictedAttendance = totalHours - data[subject].absent_excused - data[subject].absent_unexcused;
             let predictedRate = (predictedAttendance / totalHours) * 100;
             let progress = Math.min(((predictedRate - 50) / 50) * 100, 100);
@@ -76,7 +76,7 @@ socket.on('attendance_data', (data) =>{
                 const totalHours = data[subject].hours_per_week * 12;
                 const predictedAttendance = totalHours - data[subject].absent_excused - data[subject].absent_unexcused;
                 const rate = (predictedAttendance / totalHours) * 100;
-                const subjectMaxSkip = Math.floor(totalHours * 0.5);
+                const subjectMaxSkip = Math.floor(totalHours * 0.5) - data[subject].absent_excused - data[subject].absent_unexcused;
                 
                 if (rate < lowestRate) {
                     lowestRate = rate;
