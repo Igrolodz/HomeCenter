@@ -12,13 +12,13 @@ if %errorlevel% neq 0 (
     del python-3.13.3.exe
 )
 
-:: Create virtual environment
-echo Creating virtual environment...
-python -m venv venv
+@REM :: Create virtual environment
+@REM echo Creating virtual environment...
+@REM python -m venv venv
 
-:: Activate virtual environment
-echo Activating virtual environment...
-call venv\Scripts\activate.bat
+@REM :: Activate virtual environment
+@REM echo Activating virtual environment...
+@REM call venv\Scripts\activate.bat
 
 :: Upgrade pip
 python -m pip install --upgrade pip
