@@ -88,15 +88,15 @@
                 </div>
                 <div class="logs-tabs">
                     <button class="tab-button active" data-tab="system">System</button>
-                    <button class="tab-button" data-tab="network">Network</button>
+                    <button class="tab-button" data-tab="minecraft">Minecraft</button>
                     <button class="tab-button" data-tab="security">Security</button>
                 </div>
                 <div class="logs-content">
                     <div class="tab-content active" id="system-logs">
                         <pre id="systemLogList" class="log-content"></pre>
                     </div>
-                    <div class="tab-content" id="network-logs">
-                        <pre id="networkLogList" class="log-content"></pre>
+                    <div class="tab-content" id="minecraft-logs">
+                        <pre id="minecraftLogList" class="log-content"></pre>
                     </div>
                     <div class="tab-content" id="security-logs">
                         <pre id="securityLogList" class="log-content"></pre>
@@ -114,14 +114,22 @@
                                 <span id="cyan">CYAN: OFFLINE</span>
                             </div>
                         </li>
-                         <li>
-                            <div class="service-icon" id="cyan_ai_icon">
-                                <i class="fa-solid fa-circle"></i>
-                            </div>
-                            <div class="service-info">
-                                <span id="cyan_ai">CYAN_AI: OFFLINE</span>
-                            </div>
-                        </li>
+                        <li>
+                           <div class="service-icon" id="cyan_ai_icon">
+                               <i class="fa-solid fa-circle"></i>
+                           </div>
+                           <div class="service-info">
+                               <span id="cyan_ai">CYAN_AI: OFFLINE</span>
+                           </div>
+                       </li>
+                        <li>
+                           <div class="service-icon" id="minecraft_icon">
+                               <i class="fa-solid fa-circle"></i>
+                           </div>
+                           <div class="service-info">
+                               <span id="minecraft">MIN_SRV: OFFLINE</span>
+                           </div>
+                       </li>
                     </ul>
                 </div>
             </div>

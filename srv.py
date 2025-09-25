@@ -150,6 +150,24 @@ def device_scanner():
         with open("static/DB/devices.json" , "w") as f:
             json.dump(list(current_state), f)
         time.sleep(1)
+        
+def minecraft_check():
+    while True:
+        for proc in psutil.process_iter(['name', 'cmdline']):
+            try:
+                if proc.info['name'] and 'java' in proc.info['name'].lower():
+                    cmdline = proc.info['cmdline'] or []
+                    if any('server' in str(arg).lower() for arg in cmdline):
+                        data = {
+                            'service_id': 'minecraft',
+                            'service_name': 'MIN_SRV'
+                        }
+                        # Directly call the handler function instead of emitting to self
+                        handle_heartbeat(data)
+                        break
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                continue
+        time.sleep(1)
 
 
 @socketio.on('connect')
@@ -169,6 +187,16 @@ def fetch_attendance_data():
     except Exception as e:
         logging.exception("Error fetching attendance data:")
         emit('attendance_data', {'error': str(e)})
+        
+@socketio.on("fetch_minecraft")
+def fetch_minecraft_logs():
+    try:
+        with open("../dudis/logs/latest.log", "r") as f:
+            logs = f.read()
+        emit("minecraft_logs", logs)
+    except Exception as e:
+        logging.exception("Error fetching Minecraft logs:")
+        emit("minecraft_logs", f"Error: {str(e)}")
 
 @app.route('/wake', methods=['GET'])
 @auth.login_required
@@ -185,4 +213,7 @@ if __name__ == '__main__':
     socketio.start_background_task(send_system_stats)
     socketio.start_background_task(send_network_stats)
     socketio.start_background_task(device_scanner)
+    socketio.start_background_task(minecraft_check)
+    
+    
     socketio.run(app, host='0.0.0.0', port=80)

@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     let currSystemLog = null;
+    let currMinecraftLog = null;
     // Log fetching and updating
     function updateLogs() {
         // Example fetch for system logs
@@ -28,13 +29,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 currSystemLog = logs; // Update current log to the new logs
             });
 
-        // // Example fetch for network logs
-        // fetch('/api/logs/network')
+        socket.emit("fetch_minecraft");
+        socket.on("minecraft_logs", (logs) => {
+            if (logs === currMinecraftLog) return; // No change in logs, skip update
+
+            const minecraftLogs = document.getElementById('minecraftLogList');
+            minecraftLogs.textContent = logs;
+            minecraftLogs.scrollTop = minecraftLogs.scrollHeight;
+            currMinecraftLog = logs; // Update current log to the new logs
+        });
+        // // Example fetch for minecraft logs
+        // fetch('../dudis/logs/latest.log')
         //     .then(response => response.text())
         //     .then(logs => {
-        //         const networkLogs = document.getElementById('networkLogList');
-        //         networkLogs.textContent = logs;
-        //         networkLogs.scrollTop = networkLogs.scrollHeight;
+        //         const minecraftLogs = document.getElementById('minecraftLogList');
+        //         minecraftLogs.textContent = logs;
+        //         minecraftLogs.scrollTop = minecraftLogs.scrollHeight;
         //     });
 
         // // Example fetch for security logs
@@ -46,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         //         securityLogs.scrollTop = securityLogs.scrollHeight;
         //     });
     }
-
+    
     // Update logs every second
     updateLogs();
     setInterval(updateLogs, 1000);
