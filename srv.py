@@ -203,7 +203,7 @@ def fetch_minecraft_logs():
 def wake_pc():
     try:
         logging.info("Received wake command")
-        wakeonlan.main(["D8:43:AE:3E:45:0F"])  # Uses default port 9 and broadcast address
+        wakeonlan.main([os.getenv("WAKE_ON_LAN_MAC")])  # Uses default port 9 and broadcast address
         return jsonify({'message': 'Wake command sent successfully! ARCTIC should be on in a few seconds!'})
     except Exception as e:
         return jsonify({'message': f'Error: {str(e)}'}), 500
