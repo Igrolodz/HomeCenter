@@ -23,4 +23,9 @@ function updateClock() {
     document.querySelector('.year-progress').style.width = `${percentageOfYear}%`;
 }
 
+function AutoRefresh(){
+    window.location.reload();
+}
+
 setInterval(updateClock, 1000);
+setInterval(AutoRefresh, 3600000); // Refresh every hour
