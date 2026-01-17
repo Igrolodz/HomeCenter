@@ -38,18 +38,6 @@ nav a {
     margin-right: 10px;
 }
 
-@media screen and (max-width: 768px) {
-    header {
-        padding: 0.625rem;
-    }
-
-    nav a {
-        display: inline-block;
-        overflow: hidden;
-        padding: 6px 12px;
-        font-size: 14px;
-    }
-}
 
 nav a:hover {
     background-color: #555;
@@ -164,4 +152,34 @@ ul {
     color: white;
     margin-top: 5px;
     font-weight: normal;
+}
+
+
+@media screen and (max-width: 768px) {
+    header {
+        padding: 0.625rem;
+    }
+
+    nav a {
+        display: inline-block;
+        overflow: hidden;
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .panel-header {
+        font-size: 1em;
+    }
+
+    .panel-content{
+        font-size: 0.625em;
+    }
+
+    .week-days{
+        position: relative;
+        flex-wrap: wrap;
+    }
+
+    .day{
+    }
 }
