@@ -1,4 +1,6 @@
 @echo off
+for /f %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
+
 echo Starting HomeCenter Installer...
 echo.
 
@@ -12,13 +14,13 @@ if %errorlevel% neq 0 (
     del python-3.13.3.exe
 )
 
-@REM :: Create virtual environment
-@REM echo Creating virtual environment...
-@REM python -m venv venv
+:: Create virtual environment
+echo Creating virtual environment...
+python -m venv venv
 
-@REM :: Activate virtual environment
-@REM echo Activating virtual environment...
-@REM call venv\Scripts\activate.bat
+:: Activate virtual environment
+echo Activating virtual environment...
+call venv\Scripts\activate.bat
 
 :: Upgrade pip
 python -m pip install --upgrade pip
@@ -50,11 +52,10 @@ mkdir static\DB 2>nul
 if not exist config.env (
     echo Creating config.env file...
     copy config.env.example config.env
-    echo Please edit config.env with your credentials and API keys
 )
 
 echo.
-echo Installation complete!
+echo %ESC%[32mInstallation complete!
 echo Please edit config.env with your credentials and API keys before running the application
 echo To start the application, run HCStartup.bat
 echo.
