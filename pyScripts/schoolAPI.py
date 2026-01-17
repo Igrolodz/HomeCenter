@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright
-import time
+from datetime import datetime
 import re
 import os
 from dotenv import load_dotenv
@@ -43,50 +43,57 @@ def get_attendance_data():
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
         
+        currentMonth = datetime.now().month
+        print(currentMonth)
+        
         try:
             # Navigate to login page
             page.goto("https://zspolesnica.mobidziennik.pl/dziennik")
-            time.sleep(1)  # Give it a moment to load
+            page.wait_for_load_state()
 
             # Fill in login form
             page.fill("input[name=login]", os.getenv("MB_LOGIN"))
             page.fill("input[name=haslo]", os.getenv("MB_PASSWORD"))
             page.click("input[type=submit]")
-
-            # Wait for navigation after login
-            page.wait_for_load_state("networkidle")
-            time.sleep(1)  # Give it a moment after login
-
-            # Navigate to attendance page
-            page.click("a[href='https://zspolesnica.mobidziennik.pl/dziennik/obecnosci']")
-            page.wait_for_load_state("networkidle")
-            time.sleep(1)
-
-            # Navigate to detailed attendance statistics
-            page.click("a[href='https://zspolesnica.mobidziennik.pl/dziennik/statystykafrekwencji']")
-            page.wait_for_load_state("networkidle")
-            time.sleep(1)  # Give it a moment to load the statistics
+            
+            page.goto("https://zspolesnica.mobidziennik.pl/dziennik/statystykafrekwencji")
+            page.wait_for_load_state()
 
             # Now get the attendance data
             rows = page.query_selector_all("table.spis.frekwencja tr")
-            if len(rows) > 2:  # Skip header rows
-                for row in rows[2:]:  # Start from the third row
-                    cells = row.query_selector_all("td")
-                    if cells and len(cells) > 0:
-                        subject = cells[0].inner_text().strip()
-                        if subject and subject != "Podsumowanie":
-                            subject_key = format_subject_name(subject)
-                            attendance_data[subject_key] = {
-                                'name': subject,  # Keep original name as a field
-                                'present': int(cells[1].inner_text().strip() or "0"),
-                                'late': int(cells[2].inner_text().strip() or "0"),
-                                'excused': int(cells[3].inner_text().strip() or "0"),
-                                'absent_excused': int(cells[4].inner_text().strip() or "0"),
-                                'absent_unexcused': int(cells[5].inner_text().strip() or "0"),
-                                'total': int(cells[6].inner_text().strip() or "0"),
-                                'attendance_rate': float(cells[7].inner_text().strip().replace(",", ".") or "0"),
-                                'hours_per_week': subject_hours.get(subject_key, 0)
-                            }
+            for row in rows[2:]:  # Start from the third row
+                cells = row.query_selector_all("td")
+                
+                subject = cells[0].inner_text().strip()
+                
+                if currentMonth >= 9 and currentMonth <= 12:
+                    if subject and subject != "Podsumowanie":
+                        subject_key = format_subject_name(subject)
+                        attendance_data[subject_key] = {
+                            'name': subject,  # Keep original name as a field
+                            'present': int(cells[1].inner_text().strip() or "0"),
+                            'late': int(cells[2].inner_text().strip() or "0"),
+                            'excused': int(cells[3].inner_text().strip() or "0"),
+                            'absent_excused': int(cells[4].inner_text().strip() or "0"),
+                            'absent_unexcused': int(cells[5].inner_text().strip() or "0"),
+                            'total': int(cells[6].inner_text().strip() or "0"),
+                            'attendance_rate': float(cells[7].inner_text().strip().replace(",", ".") or "0"),
+                            'hours_per_week': subject_hours.get(subject_key, 0)
+                        }
+                else:
+                    if subject and subject != "Podsumowanie":
+                        subject_key = format_subject_name(subject)
+                        attendance_data[subject_key] = {
+                            'name': subject,  # Keep original name as a field
+                            'present': int(cells[8].inner_text().strip() or "0"),
+                            'late': int(cells[9].inner_text().strip() or "0"),
+                            'excused': int(cells[10].inner_text().strip() or "0"),
+                            'absent_excused': int(cells[11].inner_text().strip() or "0"),
+                            'absent_unexcused': int(cells[12].inner_text().strip() or "0"),
+                            'total': int(cells[13].inner_text().strip() or "0"),
+                            'attendance_rate': float(cells[14].inner_text().strip().replace(",", ".") or "0"),
+                            'hours_per_week': subject_hours.get(subject_key, 0)
+                        }
 
         except Exception as e:
             print(f"Error occurred: {str(e)}")
