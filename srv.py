@@ -1,6 +1,8 @@
-# basic flask with socketio
+
 import eventlet
 eventlet.monkey_patch()
+# basic flask with socketio
+import asyncio
 
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from flask_socketio import SocketIO, emit
@@ -27,7 +29,7 @@ import logging
 import os
 
 # School API import
-from pyScripts.schoolAPI import get_attendance_data
+from pyScripts.SchoolAPI.schoolAPI import get_attendance_data
 
 # Load environment variables
 from dotenv import load_dotenv
@@ -182,7 +184,7 @@ def handle_heartbeat(data):
 def fetch_attendance_data():
     try:
         logging.info("Fetching attendance data")
-        attendance_data = get_attendance_data()
+        attendance_data = asyncio.run(get_attendance_data())
         emit('attendance_data', attendance_data)
     except Exception as e:
         logging.exception("Error fetching attendance data:")

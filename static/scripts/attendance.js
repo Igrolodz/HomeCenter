@@ -23,11 +23,13 @@ const states = {
 
 const daysOfWeek = {
     'Monday': ["j_polski", "j_angielski_zawodowy", "j_angielski", "wychowanie_fizyczne", "tworzenie_i_administrowanie_bazami_danych"],
-    'Tuesday': ["tworzenie_stron_i_aplikacji_internetowych", "j_angielski", "wychowanie_fizyczne", "j_polski", "tworzenie_i_administrowanie_bazami_danych"],
+    'Tuesday': ["tworzenie_stron_i_aplikacji_internetowych", "j_angielski", "wychowanie_fizyczne", "j_polski", "tworzenie_i_administrowanie_bazami_danych", "doradztwo_zawodowe"],
     'Wednesday': ["j_polski", "biologia", "witryny_i_aplikacje_internetowe", "chemia", "matematyka", "j_zyk_niemiecki"],
     'Thursday': ["matematyka", "tworzenie_stron_i_aplikacji_internetowych", "zaj_cia_z_wychowawc"],
     'Friday': ["matematyka", "fizyka", "witryny_i_aplikacje_internetowe", "historia"]
 }
+
+var weeks = 22;
 
 socket.on('attendance_data', (data) =>{
 
@@ -35,7 +37,7 @@ socket.on('attendance_data', (data) =>{
 
     for (const subject in data){
         try {
-            let totalHours = data[subject].hours_per_week * 12;
+            let totalHours = data[subject].hours_per_week * weeks;
 
             let safeSkip = Math.floor(totalHours * 0.4) - data[subject].absent_excused - data[subject].absent_unexcused;
             let maxSkip = Math.floor(totalHours * 0.5) - data[subject].absent_excused - data[subject].absent_unexcused;
@@ -73,7 +75,7 @@ socket.on('attendance_data', (data) =>{
 
         for (const subject of daysOfWeek[day]) {
             if (data[subject]) {
-                const totalHours = data[subject].hours_per_week * 12;
+                const totalHours = data[subject].hours_per_week * weeks;
                 const predictedAttendance = totalHours - data[subject].absent_excused - data[subject].absent_unexcused;
                 const rate = (predictedAttendance / totalHours) * 100;
                 const subjectMaxSkip = Math.floor(totalHours * 0.5) - data[subject].absent_excused - data[subject].absent_unexcused;

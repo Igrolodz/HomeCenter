@@ -2,3 +2,4 @@ static/logs/homeCenter.log
 static/DB/devices.json
 config.env
 pyScripts/__pycache__
+.vscode

@@ -1,9 +1,10 @@
-from playwright.sync_api import sync_playwright
+from playwright.async_api import async_playwright
 from datetime import datetime
 import re
 import os
 from dotenv import load_dotenv
 load_dotenv("config.env")
+
 
 
 def format_subject_name(subject):
@@ -34,50 +35,50 @@ subject_hours = {
     'tworzenie_stron_i_aplikacji_internetowych': 4,
     'witryny_i_aplikacje_internetowe': 4,
     'tworzenie_i_administrowanie_bazami_danych': 4,
+    'doradztwo_zawodowe': 1
 }
 
 
-def get_attendance_data():
+async def get_attendance_data():
     attendance_data = {}
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
         
         currentMonth = datetime.now().month
-        print(currentMonth)
-        
+                
         try:
             # Navigate to login page
-            page.goto("https://zspolesnica.mobidziennik.pl/dziennik")
-            page.wait_for_load_state()
+            await page.goto("https://zspolesnica.mobidziennik.pl/dziennik")
+            await page.wait_for_load_state()
 
             # Fill in login form
-            page.fill("input[name=login]", os.getenv("MB_LOGIN"))
-            page.fill("input[name=haslo]", os.getenv("MB_PASSWORD"))
-            page.click("input[type=submit]")
+            await page.fill("input[name=login]", os.getenv("MB_LOGIN"))
+            await page.fill("input[name=haslo]", os.getenv("MB_PASSWORD"))
+            await page.click("input[type=submit]")
             
-            page.goto("https://zspolesnica.mobidziennik.pl/dziennik/statystykafrekwencji")
-            page.wait_for_load_state()
+            await page.goto("https://zspolesnica.mobidziennik.pl/dziennik/statystykafrekwencji")
+            await page.wait_for_load_state()
 
             # Now get the attendance data
-            rows = page.query_selector_all("table.spis.frekwencja tr")
+            rows = await page.query_selector_all("table.spis.frekwencja tr")
             for row in rows[2:]:  # Start from the third row
-                cells = row.query_selector_all("td")
+                cells = await row.query_selector_all("td")
                 
-                subject = cells[0].inner_text().strip()
+                subject = (await cells[0].inner_text()).strip()
                 
                 if currentMonth >= 9 and currentMonth <= 12:
                     if subject and subject != "Podsumowanie":
                         subject_key = format_subject_name(subject)
                         attendance_data[subject_key] = {
                             'name': subject,  # Keep original name as a field
-                            'present': int(cells[1].inner_text().strip() or "0"),
-                            'late': int(cells[2].inner_text().strip() or "0"),
-                            'excused': int(cells[3].inner_text().strip() or "0"),
-                            'absent_excused': int(cells[4].inner_text().strip() or "0"),
-                            'absent_unexcused': int(cells[5].inner_text().strip() or "0"),
-                            'total': int(cells[6].inner_text().strip() or "0"),
-                            'attendance_rate': float(cells[7].inner_text().strip().replace(",", ".") or "0"),
+                            'present': int((await cells[1].inner_text()).strip() or "0"),
+                            'late': int((await cells[2].inner_text()).strip() or "0"),
+                            'excused': int((await cells[3].inner_text()).strip() or "0"),
+                            'absent_excused': int((await cells[4].inner_text()).strip() or "0"),
+                            'absent_unexcused': int((await cells[5].inner_text()).strip() or "0"),
+                            'total': int((await cells[6].inner_text()).strip() or "0"),
+                            'attendance_rate': float((await cells[7].inner_text()).strip().replace(",", ".") or "0"),
                             'hours_per_week': subject_hours.get(subject_key, 0)
                         }
                 else:
@@ -85,19 +86,19 @@ def get_attendance_data():
                         subject_key = format_subject_name(subject)
                         attendance_data[subject_key] = {
                             'name': subject,  # Keep original name as a field
-                            'present': int(cells[8].inner_text().strip() or "0"),
-                            'late': int(cells[9].inner_text().strip() or "0"),
-                            'excused': int(cells[10].inner_text().strip() or "0"),
-                            'absent_excused': int(cells[11].inner_text().strip() or "0"),
-                            'absent_unexcused': int(cells[12].inner_text().strip() or "0"),
-                            'total': int(cells[13].inner_text().strip() or "0"),
-                            'attendance_rate': float(cells[14].inner_text().strip().replace(",", ".") or "0"),
+                            'present': int((await cells[8].inner_text()).strip() or "0"),
+                            'late': int((await cells[9].inner_text()).strip() or "0"),
+                            'excused': int((await cells[10].inner_text()).strip() or "0"),
+                            'absent_excused': int((await cells[11].inner_text()).strip() or "0"),
+                            'absent_unexcused': int((await cells[12].inner_text()).strip() or "0"),
+                            'total': int((await cells[13].inner_text()).strip() or "0"),
+                            'attendance_rate': float((await cells[14].inner_text()).strip().replace(",", ".") or "0"),
                             'hours_per_week': subject_hours.get(subject_key, 0)
                         }
 
         except Exception as e:
             print(f"Error occurred: {str(e)}")
         finally:
-            browser.close()
+            await browser.close()
 
         return attendance_data
