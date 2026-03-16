@@ -29,7 +29,8 @@ import logging
 import os
 
 # School API import
-from pyScripts.SchoolAPI.schoolAPI import get_attendance_data
+from pyScripts.SchoolAPI.schoolAPI import SchoolAPI
+
 
 # Load environment variables
 from dotenv import load_dotenv
@@ -39,6 +40,7 @@ load_dotenv("config.env")
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 socketio = SocketIO(app, cors_allowed_origins="*")
+school_api = SchoolAPI()
 
 log_file = 'static/logs/homeCenter.log'
 os.makedirs(os.path.dirname(log_file), exist_ok=True)
@@ -184,7 +186,7 @@ def handle_heartbeat(data):
 def fetch_attendance_data():
     try:
         logging.info("Fetching attendance data")
-        attendance_data = asyncio.run(get_attendance_data())
+        attendance_data = asyncio.run(school_api.get_attendance_data())
         emit('attendance_data', attendance_data)
     except Exception as e:
         logging.exception("Error fetching attendance data:")
@@ -216,6 +218,7 @@ if __name__ == '__main__':
     socketio.start_background_task(send_network_stats)
     socketio.start_background_task(device_scanner)
     socketio.start_background_task(minecraft_check)
+    asyncio.run(school_api.Initialize())
     
     
     socketio.run(app, host='0.0.0.0', port=80)
