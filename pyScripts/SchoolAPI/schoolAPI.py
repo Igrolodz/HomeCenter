@@ -39,8 +39,10 @@ class SchoolAPI():
         self.attendance_data = None
         self.subject_hours = {}
         self.normal_schedule_positions = {}
+        self.weeks = 0
         
     async def Initialize(self):
+        print("Initializing SchoolAPI...")
         # reads the numbers of hours per week from the website and stores them in the subject_hours dictionary
         async with async_playwright() as p:
             browser = await p.chromium.launch(headless=True)
@@ -84,8 +86,6 @@ class SchoolAPI():
                     subject_left_value = int(subject_left_value) if subject_left_value else None
                     subject_days = {}
                     
-                    print(f"Subject: {subject_text}, Key: {subject_key}, Left Value: {subject_left_value}")
-                    
                     if subject_key == "" or subject_key in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                         continue
                     
@@ -94,13 +94,10 @@ class SchoolAPI():
                         continue
                     
                     # Get parent's style to extract top coordinate
-                    print(f"Subject: {subject}")
                     parent = await subject.evaluate_handle("node => node.parentElement")
                     parent_style = await parent.get_attribute("style")
-                    print(f"Parent style for {subject_text}: {parent_style}")
                     top_match = re.search(r'top:\s*([\d.]+%?)', parent_style) if parent_style else None
                     subject_top_value = top_match.group(1) if top_match else None
-                    print(f"Subject: {subject_text}, Top Value: {subject_top_value}")
                     
                     if subject_left_value == 0:
                         subject_days["Monday"] = subject_days.get("Monday", 0) + 1
@@ -131,11 +128,10 @@ class SchoolAPI():
                         self.normal_schedule_positions[str(coord_key)] = subject_key
                     subject_position += 1
                 
-                print("Subject hours initialized:", self.subject_hours)
-                with open("pyScripts/SchoolAPI/data/subject_hours.json", "w") as f:
+                with open("pyScripts/SchoolAPI/debug/subject_hours.json", "w") as f:
                     json.dump(self.subject_hours, f)
                     
-                with open("pyScripts/SchoolAPI/data/normal_schedule_positions.json", "w") as f:
+                with open("pyScripts/SchoolAPI/debug/normal_schedule_positions.json", "w") as f:
                     json.dump(self.normal_schedule_positions, f)
                     
                 # TODO:
@@ -152,7 +148,6 @@ class SchoolAPI():
                 await page.wait_for_selector(date_selector)
                 
                 option_values = await page.eval_on_selector_all(date_selector + " option", "options => options.map(option => ({value: option.value, month: option.parentElement.getAttribute('label')}))")
-                print("Option values:", option_values)
                 for option_value in option_values:
                     if currentDate >= 9 and currentDate <= 12:
                         if option_value["month"] in ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec"]:
@@ -167,20 +162,16 @@ class SchoolAPI():
                     # Some weeks can be empty, so don't require lesson tooltips to exist.
                     await page.wait_for_selector("#content", state="attached")
                     await page.wait_for_selector("#content div.table, #content div.fright.nieDoDruku", state="attached")
-                    print(f"Selected month: {option_value['month']}")
                     
                     # cancelled classes logic
                     cancelled_class_names = await page.locator("div.tooltip[alt='Lekcja odwołana'] span.sr-only").all_inner_texts()
-                    print(f"\033[91mCancelled classes found:\033[0m", cancelled_class_names)
                     for class_text in cancelled_class_names:
                         class_parts = [part.strip() for part in class_text.splitlines() if part.strip()]
                         class_text = class_parts[2] if len(class_parts) >= 3 else class_text.strip()
                         class_key = format_subject_name(class_text)
-                        print(f"Processing cancelled class: {class_text}, Key: {class_key}")
                         
                         if class_key in self.subject_hours:
                             self.subject_hours[class_key]['times_replaced'] += 1
-                            print(f"Class {class_text} was cancelled. Times replaced: {self.subject_hours[class_key]['times_replaced']}")
                         
                     # handling free days logic
                     day_names = await page.query_selector_all("div.autoTooltip")
@@ -207,13 +198,11 @@ class SchoolAPI():
                                 if day_name in self.subject_hours.get(class_hour, {}).get('days', {}):
                                     for count in range(self.subject_hours[class_hour]['days'][day_name]):
                                         self.subject_hours[class_hour]['times_replaced'] += 1
-                                        print(f"Class {class_hour} was cancelled on {day_name}. Times replaced: {self.subject_hours[class_hour]['times_replaced']}")
 
                         
                         
                     # Handling substituted classes logic
                     # Use coordinate pairs (left, top) to identify slots
-                    # TODO Fix getting only the subtituted classes, not all classes, maybe by checking the alt attribute for "Zastępstwo" or something like thatss
                     all_classes = await page.query_selector_all("div.tooltip")
                     for element in all_classes:
                         if await element.get_attribute("alt") == "Zastępstwo":
@@ -246,22 +235,19 @@ class SchoolAPI():
                             element_left = int(element_left)
                             coord_key = str((element_left, element_top))
                             
-                            print(f"DEBUG: Class key: {class_key}, coords: ({element_left}, {element_top})")
                             # This is a substitution - find what was originally at this coordinate
                             original_subject_key = self.normal_schedule_positions.get(coord_key)
                             
                             if original_subject_key and original_subject_key in self.subject_hours:
                                 self.subject_hours[original_subject_key]['times_replaced'] += 1
-                                print(f"Original class {original_subject_key} was replaced at coords {coord_key}")
                             
                             # The substituting class had one less cancellation
                             if class_key in self.subject_hours:
                                 self.subject_hours[class_key]['times_replaced'] -= 1
-                                print(f"Class {class_text} substituted at coords {coord_key}. Times replaced: {self.subject_hours[class_key]['times_replaced']}")
-                    
-                with open("pyScripts/SchoolAPI/data/subject_hours.json", "w") as f:
+                    self.weeks += 1
+                with open("pyScripts/SchoolAPI/debug/subject_hours.json", "w") as f:
                     json.dump(self.subject_hours, f)
-                    
+    
                 print("Initialization complete.")
                 return
                         
@@ -301,7 +287,7 @@ class SchoolAPI():
                     subject = (await cells[0].inner_text()).strip()
                     
                     if currentMonth >= 9 and currentMonth <= 12:
-                        if subject and subject != "Podsumowanie":
+                        if subject and subject != "Podsumowanie" and subject != "zajęcia z wychowawcą":
                             subject_key = format_subject_name(subject)
                             self.attendance_data[subject_key] = {
                                 'name': subject,  # Keep original name as a field
@@ -312,10 +298,11 @@ class SchoolAPI():
                                 'absent_unexcused': int((await cells[5].inner_text()).strip() or "0"),
                                 'total': int((await cells[6].inner_text()).strip() or "0"),
                                 'attendance_rate': float((await cells[7].inner_text()).strip().replace(",", ".") or "0"),
-                                'subject_hours': self.subject_hours.get(subject_key, 0)
+                                'subject_hours': self.subject_hours.get(subject_key, 0),
+                                'weeks': self.weeks
                             }
                     else:
-                        if subject and subject != "Podsumowanie":
+                        if subject and subject != "Podsumowanie" and subject != "zajęcia z wychowawcą":
                             subject_key = format_subject_name(subject)
                             self.attendance_data[subject_key] = {
                                 'name': subject,  # Keep original name as a field
@@ -326,7 +313,8 @@ class SchoolAPI():
                                 'absent_unexcused': int((await cells[12].inner_text()).strip() or "0"),
                                 'total': int((await cells[13].inner_text()).strip() or "0"),
                                 'attendance_rate': float((await cells[14].inner_text()).strip().replace(",", ".") or "0"),
-                                'subject_hours': self.subject_hours.get(subject_key, 0)
+                                'subject_hours': self.subject_hours.get(subject_key, 0),
+                                'weeks': self.weeks
                             }
 
             except Exception as e:
