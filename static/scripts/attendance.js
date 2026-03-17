@@ -22,11 +22,11 @@ const states = {
 }
 
 const daysOfWeek = {
-    'Monday': ["j_polski", "j_angielski_zawodowy", "j_angielski", "wychowanie_fizyczne", "tworzenie_i_administrowanie_bazami_danych"],
-    'Tuesday': ["tworzenie_stron_i_aplikacji_internetowych", "j_angielski", "wychowanie_fizyczne", "j_polski", "tworzenie_i_administrowanie_bazami_danych", "doradztwo_zawodowe"],
-    'Wednesday': ["j_polski", "biologia", "witryny_i_aplikacje_internetowe", "chemia", "matematyka", "j_zyk_niemiecki"],
-    'Thursday': ["matematyka", "tworzenie_stron_i_aplikacji_internetowych", "zaj_cia_z_wychowawc"],
-    'Friday': ["matematyka", "fizyka", "witryny_i_aplikacje_internetowe", "historia"]
+    'Monday': {},
+    'Tuesday': {},
+    'Wednesday': {},
+    'Thursday': {},
+    'Friday': {}
 }
 
 var weeks = 22;
@@ -34,10 +34,13 @@ var weeks = 22;
 socket.on('attendance_data', (data) =>{
 
     console.log("Received attendance data:", data);
+    const container = document.getElementById(`container`);
 
     for (const subject in data){
+        if (!data[subject].subject_hours || data[subject].subject_hours == 0) continue;
+
         try {
-            let totalHours = data[subject].hours_per_week * weeks;
+            let totalHours = (data[subject].subject_hours.hours * data[subject].weeks) - data[subject].subject_hours.times_replaced;
 
             let safeSkip = Math.floor(totalHours * 0.4) - data[subject].absent_excused - data[subject].absent_unexcused;
             let maxSkip = Math.floor(totalHours * 0.5) - data[subject].absent_excused - data[subject].absent_unexcused;
@@ -45,10 +48,23 @@ socket.on('attendance_data', (data) =>{
             let predictedRate = (predictedAttendance / totalHours) * 100;
             let progress = Math.min(((predictedRate - 50) / 50) * 100, 100);
 
-            document.getElementById(`${subject}-safe-skip`).innerText = `Safe skip: ${safeSkip}`;
-            document.getElementById(`${subject}-max-skip`).innerText = `Max skip: ${maxSkip}`;
+            const panel = document.createElement("div");
+            panel.className = "info-panel";
+            panel.id = `${subject}-panel`;
+            panel.innerHTML = `
+                <div class='panel-header'><span>${data[subject].name}</span></div>
+                <div class='panel-content'>
+                <span id='${subject}-attendance'>Frekwencja: ${predictedRate.toFixed(1)}%</span>
+
+                <div class="attendance-details">
+                    <span id='${subject}-safe-skip'>Safe skip: ${safeSkip}</span>
+                    <span id='${subject}-max-skip'>Max skip: ${maxSkip}</span>
+                </div>
+                <div class='progress-bar'><div class='progress' id='${subject}-progress'></div></div>
+                </div></div>
+            `;
+            container.appendChild(panel);
             document.getElementById(`${subject}-progress`).style.width = `${progress}%`;
-            document.getElementById(`${subject}-attendance`).innerText = `Frekwencja: ${predictedRate.toFixed(1)}%`;
 
             if (predictedRate >= 80) {
                 document.getElementById(`${subject}-panel`).style.borderColor = states.safe.color;
@@ -63,6 +79,11 @@ socket.on('attendance_data', (data) =>{
                 document.getElementById(`${subject}-panel`).style.borderColor = states.loading.color;
                 document.getElementById(`${subject}-progress`).style.backgroundColor = states.loading.color;
             }
+
+            for (const day in data[subject].subject_hours.days) {
+                daysOfWeek[day][subject] = data[subject].name;
+            }
+
         } catch (error) {
             console.error(`Error updating attendance for ${subject}:`, error);
         }
@@ -73,9 +94,10 @@ socket.on('attendance_data', (data) =>{
         let dayState = states.safe;
         let maxSkip = 9999;
 
-        for (const subject of daysOfWeek[day]) {
+        const dayElement = document.getElementById(`${day}`);
+        for (const subject in daysOfWeek[day]) {
             if (data[subject]) {
-                const totalHours = data[subject].hours_per_week * weeks;
+                const totalHours = (data[subject].subject_hours.hours * data[subject].weeks) - data[subject].subject_hours.times_replaced;
                 const predictedAttendance = totalHours - data[subject].absent_excused - data[subject].absent_unexcused;
                 const rate = (predictedAttendance / totalHours) * 100;
                 const subjectMaxSkip = Math.floor(totalHours * 0.5) - data[subject].absent_excused - data[subject].absent_unexcused;
@@ -90,6 +112,14 @@ socket.on('attendance_data', (data) =>{
                 if(subjectMaxSkip <= maxSkip){
                     maxSkip = subjectMaxSkip;
                 }
+                
+                const subjectList = dayElement.getElementsByTagName('ul')[0];
+                const listItem = document.createElement('li');
+                listItem.innerText = data[subject].name;
+                subjectList.appendChild(listItem);
+
+            }else{
+                console.warn(`Subject ${subject} not found in data for ${day}`);
             }
         }
 
