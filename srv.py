@@ -221,4 +221,5 @@ if __name__ == '__main__':
     asyncio.run(school_api.Initialize())
     
     
+    print("\033[92mServer started at http://localhost:80\033[0m")
     socketio.run(app, host='0.0.0.0', port=80)
