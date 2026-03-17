@@ -2,4 +2,6 @@ static/logs/homeCenter.log
 static/DB/devices.json
 config.env
 pyScripts/__pycache__
+pyScripts/SchoolAPI/debug
+pyScripts/SchoolAPI/__pycache__
 .vscode
