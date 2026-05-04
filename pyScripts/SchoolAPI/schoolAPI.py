@@ -65,9 +65,38 @@ class SchoolAPI():
                 await page.wait_for_load_state()
 
                 subject_position = 0
-                subject_names = await page.query_selector_all("div.tooltip")
-                for subject in subject_names:
+                
+                # color check if the schedule is original or if there are already some substitutions
+                forward_movement = True
+                found_original_schedule = False
+                
+                while not found_original_schedule:
+                    days = await page.query_selector_all("div.autoTooltip")
                     
+                    for day in days:
+                        spans = await day.query_selector_all("span")
+                        if spans:
+                            curDate = datetime.now().month
+                            if curDate == 6 or curDate == 12:
+                                forward_movement = False
+
+                            if forward_movement:
+                                await page.click("#content > div.fright.nieDoDruku > div:nth-child(3) > a:nth-child(1)")
+                                await page.wait_for_load_state()
+                                break
+                            
+                            if not forward_movement:
+                                await page.click("#content > div.fright.nieDoDruku > div:nth-child(3) > a:nth-child(3)")
+                                await page.wait_for_load_state()
+                                break
+                    else:
+                        found_original_schedule = True
+                        
+                            
+                    
+                subject_names = await page.query_selector_all("div.tooltip")
+                
+                for subject in subject_names:
                     # subject_text = (await subject.query_selector("span > b").inner_text()).strip()
                     element = await subject.query_selector("span.sr-only")
                     if not element:
